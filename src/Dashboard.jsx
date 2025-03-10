@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { fetchData } from "./utils/utils";
+import { PostForm } from "./components/PostForm";
+import { PostShowcase } from "./components/PostShowcase";
 
 export default function Dashboard() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -23,8 +25,18 @@ export default function Dashboard() {
   return (
     <>
       {isAdmin ? (
-        <div>
+        <div className="contentBox">
           <h1>DASHBOARD</h1>
+          <div className="content">
+            <div>
+              <h2>New Post</h2>
+              <PostForm route={"/api/posts"} method={"POST"} />
+            </div>
+            <div>
+              <h2>Manage Posts</h2>
+              <PostShowcase />
+            </div>
+          </div>
         </div>
       ) : null}
     </>
