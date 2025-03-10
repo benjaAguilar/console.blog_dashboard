@@ -1,9 +1,22 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import styles from "./css/App.module.css";
 import { fetchData } from "./utils/utils";
 
 function App() {
   const formRef = useRef();
+
+  useEffect(() => {
+    async function checkUser() {
+      const user = await fetchData("/api/users/authUser", "GET");
+
+      if (user.success) {
+        window.location.href = "/dashboard";
+        return;
+      }
+    }
+
+    checkUser();
+  }, []);
 
   async function login(e) {
     e.preventDefault();
