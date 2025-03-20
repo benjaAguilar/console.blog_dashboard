@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchData } from "../utils/utils";
 
 export function PostShowcase() {
+  const [reRender, setReRender] = useState(0);
   const [posts, setPosts] = useState(null);
 
   useEffect(() => {
@@ -18,7 +19,26 @@ export function PostShowcase() {
     }
 
     getPosts();
-  }, []);
+  }, [reRender]);
+
+  async function deletePost(id) {
+    const confirmDelete = prompt("Type delete to confirm").toLocaleLowerCase();
+
+    if (confirmDelete !== "delete") {
+      return alert("post not deleted");
+    }
+
+    const isDeleted = await fetchData(`/api/posts/${id}`, "DELETE");
+
+    if (!isDeleted.success) {
+      alert("Error deleting the post");
+      console.error(isDeleted.message);
+      return;
+    }
+
+    alert("Post deleted!");
+    setReRender(reRender + 1);
+  }
 
   return (
     <div>
@@ -32,7 +52,13 @@ export function PostShowcase() {
                 />
                 <h4>{post.title}</h4>
                 <div className="btns">
-                  <button>Delete</button>
+                  <button
+                    onClick={() => {
+                      deletePost(post.id);
+                    }}
+                  >
+                    Delete
+                  </button>
                   <button>Update</button>
                 </div>
               </div>
