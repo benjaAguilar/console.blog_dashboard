@@ -11,7 +11,7 @@ export default function Dashboard() {
     async function checkUser() {
       const user = await fetchData("/api/users/authUser", "GET");
 
-      if (!user.success) {
+      if (!user.success || user.role !== "ADMIN") {
         window.location.href = "/";
         return;
       }
